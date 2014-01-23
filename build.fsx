@@ -171,9 +171,10 @@ Target "CreateNuGet" (fun _ ->
                 OutputPath = nugetDir
                 Summary = projectSummary
                 Dependencies =
-                    if package <> "FAKE.Core" && package <> projectName then
-                      ["FAKE.Core", RequireExactly (NormalizeVersion buildVersion)]
-                    else p.Dependencies
+                    ("FSharp.Compiler.Service", GetPackageVersion "./packages/" "FSharp.Compiler.Service") :: 
+                    (if package <> "FAKE.Core" && package <> projectName then
+                       ["FAKE.Core", RequireExactly (NormalizeVersion buildVersion)]
+                     else p.Dependencies) 
                 AccessKey = getBuildParamOrDefault "nugetkey" ""
                 Publish = hasBuildParam "nugetkey"
                 ToolPath = "./tools/NuGet/nuget.exe"  }) "fake.nuspec"
